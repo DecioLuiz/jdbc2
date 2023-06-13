@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import db.DB;
+import db.DbIntegrityException;
 
 public class Program {
 
@@ -75,6 +76,29 @@ public class Program {
 //		
 //	TERCEIRO TESTE: ATUALIZANDO DADOS NO BANCO DE DADOS
 		
+//		Connection conn = null;
+//		PreparedStatement st = null;
+//		
+//		try {
+//			conn = DB.getConnection();
+//			
+//			st = conn.prepareStatement(
+//					"UPDATE seller "
+//					+ "SET BaseSalary = BaseSalary + ? "
+//					+ "WHERE (DepartmentId = ?)");
+//			st.setDouble(1, 200.0);
+//			st.setInt(2, 2);
+//			
+//			int rowsAffected = st.executeUpdate();
+//			
+//			System.out.println("Done! Rows affected: " + rowsAffected);
+//		} catch (SQLException e) {
+//			DB.closeStatement(st);
+//			DB.closeConnection();
+//		}
+			
+//	QUARTO TESTE: DELETANDO DADOS NO BANCO DE DADOS
+		
 		Connection conn = null;
 		PreparedStatement st = null;
 		
@@ -82,20 +106,20 @@ public class Program {
 			conn = DB.getConnection();
 			
 			st = conn.prepareStatement(
-					"UPDATE seller "
-					+ "SET BaseSalary = BaseSalary + ? "
-					+ "WHERE (DepartmentId = ?)");
-			st.setDouble(1, 200.0);
-			st.setInt(2, 2);
+					"DELETE FROM department "
+					+ "WHERE "
+					+ "Id = ?");
+			st.setInt(1, 2);
 			
 			int rowsAffected = st.executeUpdate();
 			
 			System.out.println("Done! Rows affected: " + rowsAffected);
 		} catch (SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
+		} finally {
 			DB.closeStatement(st);
 			DB.closeConnection();
 		}
-			
 	}
 
 }
